@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <style>
+        canvas {
+            width: 100%;
+            height: 100%
+        }
+    </style>
+    <script src="js/three.js"></script>
+</head>
+
+<body>
+    <p>这个示例显示一个旋转的立方体</p>
+    <!--Three.js渲染所需的三大组件-->
+    <script>
+        //场景组件
+        var scene = new THREE.Scene();//在Threejs中场景就只有一种，用THREE.Scene来表示
+        //相机组件
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);//透视相机
+        //渲染器
+        var renderer = new THREE.WebGLRenderer();
+        //有以上三个组件，才能将相机渲染到网页中午去
+        renderer.setSize(window.innerWidth, window.innerHeight); // 设置渲染器的大小为窗口的内宽度，也就是内容区的宽度
+        
+        //渲染器renderer的domElement元素，表示渲染器中的画布，所有的渲染都是画在domElement上的，
+        //所以这里的appendChild表示将这个domElement挂接在body下面，这样渲染的结果就能够在页面中显示了。
+        document.body.appendChild(renderer.domElement);
+
+        //添加物体到场景中
+        var geometry = new THREE.CubeGeometry(1, 1, 1);
+        var material = new THREE.MeshBasicMaterial({
+            color: 0x00ffff
+        });
+        var cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+        camera.position.z = 3;
+    
+        //渲染
+        //渲染有两种方式：实时渲染和离线渲染 
+        function render() {
+            //requestAnimationFrame，这个函数就是让浏览器去执行一次参数中的函数，render中调用requestAnimationFrame()函数，
+            //requestAnimationFrame()函数又让rander()再执行一次，就形成了我们通常所说的游戏循环了。
+            requestAnimationFrame(render);
+            cube.rotation.x += 0.005;
+            cube.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+        render();
+    </script>
+</body>
+
+</html>
